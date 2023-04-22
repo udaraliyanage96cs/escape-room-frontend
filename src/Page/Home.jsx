@@ -79,7 +79,61 @@ function App() {
 
   return (
     <div className="container">
-      <div className="form-group mb-2">
+      <div className="row d-flex">
+        <div className="w-fit">
+          <div className="form-group   mt-4">
+            <button className="btn btn-primary" onClick={startTimer}>
+              Start Timer
+            </button>
+          </div>
+        </div>
+        {isPlaying ? (
+          <div className="w-fit">
+            <div className="form-group  mt-4">
+              <button className="btn btn-primary" onClick={pauseTimer}>
+                Pause Timer
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="w-fit">
+            <div className="form-group mt-4">
+              <button className="btn btn-primary" onClick={resumeTimer}>
+                Resume Timer
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <hr className="mt-4 mb-4 c-white"/>
+
+      <div className="row">
+        <div className="col-lg-3">
+          <div className="form-group mb-2">
+            <label className="form-label">Add Time</label>
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Time in Seconds"
+              onChange={(event) => {
+                setAddTime(event.target.value);
+              }}
+            />
+          </div>
+        </div>
+        <div className="col-lg-3 d-flex align-items-end">
+          <div className="form-group mb-2">
+            <button className="btn btn-primary" onClick={addTimeHander}>
+              Add More Time
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <hr className="mt-4 mb-4 c-white"/>
+
+      <div className="form-group mt-2 mb-2">
         <label className="form-label">Title</label>
         <input
           className="form-control"
@@ -113,55 +167,6 @@ function App() {
         <button className="btn btn-primary" onClick={sendMessage}>
           Send
         </button>
-      </div>
-      <div className="row  d-flex justify-content-center">
-        <div className="col-lg-2">
-          <div className="form-group  d-flex justify-content-center mt-4">
-            <button className="btn btn-primary" onClick={startTimer}>
-              Start Timer
-            </button>
-          </div>
-        </div>
-        {isPlaying ? (
-          <div className="col-lg-2">
-            <div className="form-group  d-flex justify-content-center mt-4">
-              <button className="btn btn-primary" onClick={pauseTimer}>
-                Pause Timer
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="col-lg-2">
-            <div className="form-group  d-flex justify-content-center mt-4">
-              <button className="btn btn-primary" onClick={resumeTimer}>
-                Resume Timer
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="row">
-        <div className="col-lg-3">
-          <div className="form-group mb-2">
-            <label className="form-label">Add Time</label>
-            <input
-              type="number"
-              className="form-control"
-              placeholder="Time in Seconds"
-              onChange={(event) => {
-                setAddTime(event.target.value);
-              }}
-            />
-          </div>
-        </div>
-        <div className="col-lg-3 d-flex align-items-end">
-          <div className="form-group mb-2">
-            <button className="btn btn-primary" onClick={addTimeHander}>
-              Add More Time
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );
