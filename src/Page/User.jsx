@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 import { useEffect, useState, Fragment } from "react";
-const socket = io.connect("http://localhost:3000");
+const socket = io.connect("https://esc-back.netlify.app/");
 
 import SoundTrack1 from "../assets/track1.wav";
 import SoundTrack2 from "../assets/track2.wav";

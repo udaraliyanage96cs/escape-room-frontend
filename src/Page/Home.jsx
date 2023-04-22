@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import SoundTrack1 from "../assets/track1.wav";
 import SoundTrack2 from "../assets/track2.wav";
 
-const socket = io.connect("http://localhost:3000");
+const socket = io.connect("https://esc-back.netlify.app/");
 
 function App() {
   const [title, setTitle] = useState("");
