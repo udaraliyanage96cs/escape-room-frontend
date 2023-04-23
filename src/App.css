@@ -62,3 +62,19 @@
 .c-white{
   color: #fff;
 }
+
+.mesage-text{
+  font-size: 25px;
+}
+
+.h-75{
+  height: 80vh !important;
+}
+
+.h-25{
+  height: 20vh !important;
+}
+
+.timer{
+  font-size: 85px;
+}

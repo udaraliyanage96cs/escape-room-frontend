@@ -58,9 +58,9 @@ export default function User() {
 
   useEffect(() => {
     socket.on("timeAdd", (amountInSeconds) => {
-      console.log(amountInSeconds.addTime);
+      console.log(amountInSeconds.time_in_min);
       setSecondsLeft(
-        (secondsLeft) => secondsLeft + parseInt(amountInSeconds.addTime)
+        (secondsLeft) => secondsLeft + parseInt(amountInSeconds.time_in_min)
       );
     });
   }, []);
@@ -113,23 +113,17 @@ export default function User() {
 
   return (
     <div className="container">
-      {!loading && (
-        <div>
-          {showContent && (
-            <div>
-              <div>
-                <h5 className="display-text">{messageReceived.data.title}</h5>
-              </div>
-              <div className="display-text">{messageReceived.data.message}</div>
-              <div className="display-text">
-                {messageReceived.data.time * 1000}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-      <div className="display-text">
-        <h1>
+      <div className="h-75">
+        {!loading && (
+          <div className="h-75  d-flex ">
+            {showContent && (
+                <div className="display-text mesage-text d-flex align-items-center">{messageReceived.data.message}</div>
+            )}
+          </div>
+        )}
+      </div>
+      <div className="display-text h-25 d-flex align-items-center justify-content-center">
+        <h1 className="timer">
           {minutes}:{seconds < 10 ? "0" : ""}
           {seconds}
         </h1>

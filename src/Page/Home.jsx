@@ -8,18 +8,21 @@ import SoundTrack2 from "../assets/track2.wav";
 const socket = io.connect("https://escape-room-back.onrender.com/");
 
 function App() {
-  const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState(600);
   const [addTime, setAddTime] = useState("");
+  const [start, setStart] = useState(false);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioTrack1] = useState(new Audio(SoundTrack1));
   const [audioTrack2] = useState(new Audio(SoundTrack2));
 
+  const [secondsLeft, setSecondsLeft] = useState(3600);
+  const [timerStart, setTimerStart] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
   const sendMessage = () => {
     const data = {
-      title: title,
       message: message,
       time: time,
     };
@@ -29,20 +32,29 @@ function App() {
 
   const addTimeHander = () => {
     console.log(addTime);
-    socket.emit("timeAdd", { addTime });
+    let time_in_min = parseInt(addTime) * 60;
+    console.log(time_in_min);
+    setSecondsLeft(
+      (secondsLeft) => secondsLeft + parseInt(time_in_min)
+    );
+    socket.emit("timeAdd", { time_in_min });
   };
 
   const startTimer = () => {
+    setStart(true);
     socket.emit("startTimer", "true");
+    setTimerStart(true);
     playAudioBackground();
   };
 
   const pauseTimer = () => {
     pauseAudio();
+    setIsPaused(true);
     socket.emit("pauseTimer", "true");
   };
   const resumeTimer = () => {
     //audioTrack2.play();
+    setIsPaused(false);
     socket.emit("resumeTimer", "true");
     setIsPlaying(true);
   };
@@ -77,36 +89,64 @@ function App() {
     setIsPlaying(false);
   };
 
+  useEffect(() => {
+    if (timerStart) {
+      if (secondsLeft <= 0) return;
+      const intervalId = setInterval(() => {
+        if (!isPaused) {
+          setSecondsLeft((secondsLeft) => secondsLeft - 1);
+        }
+      }, 1000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [secondsLeft, timerStart, isPaused]);
+
+  const minutes = Math.floor(secondsLeft / 60);
+  const seconds = secondsLeft % 60;
+
   return (
     <div className="container">
+      <div className="display-text h-25 d-flex align-items-center justify-content-center">
+        <h1 className="timer">
+          {minutes}:{seconds < 10 ? "0" : ""}
+          {seconds}
+        </h1>
+      </div>
       <div className="row d-flex">
-        <div className="w-fit">
-          <div className="form-group   mt-4">
-            <button className="btn btn-primary" onClick={startTimer}>
-              Start Timer
-            </button>
-          </div>
-        </div>
-        {isPlaying ? (
+        {!start && (
           <div className="w-fit">
-            <div className="form-group  mt-4">
-              <button className="btn btn-primary" onClick={pauseTimer}>
-                Pause Timer
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="w-fit">
-            <div className="form-group mt-4">
-              <button className="btn btn-primary" onClick={resumeTimer}>
-                Resume Timer
+            <div className="form-group   mt-4">
+              <button className="btn btn-primary" onClick={startTimer}>
+                Start Timer
               </button>
             </div>
           </div>
         )}
+        {start && (
+          <div className="w-fit">
+            {isPlaying ? (
+              <div className="w-fit">
+                <div className="form-group  mt-4">
+                  <button className="btn btn-primary" onClick={pauseTimer}>
+                    Pause Timer
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="w-fit">
+                <div className="form-group mt-4">
+                  <button className="btn btn-primary" onClick={resumeTimer}>
+                    Resume Timer
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
-      <hr className="mt-4 mb-4 c-white"/>
+      <hr className="mt-4 mb-4 c-white" />
 
       <div className="row">
         <div className="col-lg-3">
@@ -115,7 +155,7 @@ function App() {
             <input
               type="number"
               className="form-control"
-              placeholder="Time in Seconds"
+              placeholder="Time in Minutes"
               onChange={(event) => {
                 setAddTime(event.target.value);
               }}
@@ -131,21 +171,11 @@ function App() {
         </div>
       </div>
 
-      <hr className="mt-4 mb-4 c-white"/>
+      <hr className="mt-4 mb-4 c-white" />
 
-      <div className="form-group mt-2 mb-2">
-        <label className="form-label">Title</label>
-        <input
-          className="form-control"
-          placeholder="Your Title ..."
-          onChange={(event) => {
-            setTitle(event.target.value);
-          }}
-        />
-      </div>
       <div className="form-group mb-2">
         <label className="form-label">Message</label>
-        <input
+        <textarea
           className="form-control"
           placeholder="Your Message..."
           onChange={(event) => {
@@ -161,6 +191,7 @@ function App() {
           onChange={(event) => {
             setTime(event.target.value);
           }}
+          value={time}
         />
       </div>
       <div className="form-group mt-4 d-flex justify-content-center">
