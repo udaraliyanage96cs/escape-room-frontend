@@ -122,7 +122,7 @@ export default function User() {
           </div>
         )}
       </div>
-      <div className="display-text h-25 d-flex align-items-center justify-content-center">
+      <div className="display-text h-25 align-items-center justify-content-center">
         <h1 className="timer">
           {minutes}:{seconds < 10 ? "0" : ""}
           {seconds}
