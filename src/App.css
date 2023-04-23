@@ -78,3 +78,10 @@
 .timer{
   font-size: 85px;
 }
+
+.my_web{
+  text-decoration: none;
+  color: #e125a3;
+  font-family: roboto;
+  font-weight: 700;
+}
