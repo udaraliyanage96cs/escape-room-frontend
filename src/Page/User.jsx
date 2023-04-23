@@ -127,7 +127,7 @@ export default function User() {
           {minutes}:{seconds < 10 ? "0" : ""}
           {seconds}
         </h1>
-        <div className="mt-3 display-text">Developed By <a className="my_web" href="https://udarax.me/" target="_blank">UDARAX.ME</a></div>
+        {/* <div className="mt-3 display-text">Developed By <a className="my_web" href="https://udarax.me/" target="_blank">UDARAX.ME</a></div> */}
       </div>
     </div>
   );

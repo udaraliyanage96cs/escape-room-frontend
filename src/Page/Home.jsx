@@ -199,7 +199,7 @@ function App() {
           Send
         </button>
       </div>
-      <div className="mt-5 display-text">Developed By <a className="my_web" href="https://udarax.me/" target="_blank">UDARAX.ME</a></div>
+      {/* <div className="mt-5 display-text">Developed By <a className="my_web" href="https://udarax.me/" target="_blank">UDARAX.ME</a></div> */}
     </div>
   );
 }
